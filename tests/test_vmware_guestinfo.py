@@ -13,8 +13,7 @@ else:
 from mock import mock_open, patch, Mock
 
 def instance( conf ):
-    tmp = self.tmp_dir()
-    self.paths = Paths({'run_dir': tmp})
+    tmp = conf.tmp_dir()
     return DataSourceVmwareGuestinfo( conf, Mock(), {}, Paths({'run_dir': tmp}) )
 
 def test_nothing_set():
