@@ -1,46 +1,24 @@
-from __future__ import print_function
-
 import subprocess
 import os
 import json
 import xml.etree.ElementTree as ET
 import cloudinit.util as util
 
-LOG = None
-try:
-    from cloudinit import log
-    LOG = log.getLogger(__name__)
-except AttributeError:
-    LOG = log
+from cloudinit import log as logging
+from cloudinit import sources
 
-DS = None
-NETWORK_VIA_DISTRO = True
-try:
-    # cloudinit 0.7.*
-    from cloudinit import sources
-    DS = sources.DataSource
-except ImportError:
-    # cloudinit 0.6.*
-    from cloudinit import DataSource
-    NETWORK_VIA_DISTRO = False
-    DS = DataSource.DataSource
+LOG = logging.getLogger(__name__)
 
-try:
-    from cloudinit import stages
-except ImportError:
-    stages = None
+class DataSourceNone(sources.DataSource):
 
-try:
-    from cloudinit.net import eni
-except ImportError:
-    eni = None
+    dsname = "VmwareGuestinfo"
 
-class DataSourceVmwareGuestinfo(DS):
+    def __init__(self, sys_cfg, distro, paths, ud_proc=None):
+        sources.DataSource.__init__(self, sys_cfg, distro, paths, ud_proc)
+        self.metadata = {}
+        self.userdata_raw = ''
 
-    class CommunicationError(Exception):
-        pass
-
-    def get_data(self):
+    def _get_data(self):
         rpctool = self._which("vmware-rpctool")
         if rpctool is None:
             LOG.info("No vmware-rpctool found (PATH is %s)" % self._paths())
@@ -149,22 +127,12 @@ class DataSourceVmwareGuestinfo(DS):
             return eni.convert_eni_data(self.metadata['network-interfaces'])
         return None
 
+# Used to match classes to dependenciess
+datasources = [
+    (DataSourceVmwareGuestinfo, (sources.DEP_FILESYSTEM, sources.DEP_NETWORK)),
+    (DataSourceVmwareGuestinfo, []),
+]
+
+# Return a list of data sources that match this set of dependencies
 def get_datasource_list(depends):
-    """
-    Return a list of data sources that match this set of dependencies
-    """
-    return [DataSourceVmwareGuestinfo]
-
-def main():
-    log.setupLogging()
-    init = stages.Init()
-    s = DataSourceVmwareGuestinfo(init.cfg, init.distro, init.paths)
-    if s.get_data():
-        print("Found data")
-    else:
-        print("Didn't find data")
-    print("userdata_raw: %r" % s.userdata_raw)
-    print("metadata: %r" % s.metadata)
-
-if __name__ == "__main__":
-    main()
+    return sources.list_from_depends(depends, datasources)

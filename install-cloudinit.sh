@@ -1,5 +1,5 @@
 #!/bin/bash
-cloudinit_version=${1:-0.7.8}
+cloudinit_version=${1:-18.2}
 mkdir -p vendor/cloud-init
 git init vendor/cloud-init
 cd vendor/cloud-init

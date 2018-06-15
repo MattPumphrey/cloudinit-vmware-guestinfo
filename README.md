@@ -6,7 +6,7 @@ DataSourceVmwareGuestinfo  vmware guestinfo based provider for cloud-init
 Requirements
 ------------------
 
-Ubuntu 12.04/14.04: Install package `cloud-init`.
+Ubuntu 14.04/16.04/18.04: Install package `cloud-init`.
 
 
 Install
@@ -99,13 +99,14 @@ Authors
 ------------------
 
 Hannes Georg @hannesg42
+Sebastian Brandt @sebbrandt87
 
 License
 -----------------
 
 The MIT License (MIT)
 
-Copyright (c) 2016 XING AG
+Copyright (c) 2018 XING SE
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

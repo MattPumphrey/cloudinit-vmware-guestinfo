@@ -1,6 +1,6 @@
 import unittest
 from DataSourceVmwareGuestinfo import DataSourceVmwareGuestinfo
-from cloudinit import log
+from cloudinit import log as logging
 
 from sys import version_info
 if version_info.major == 2:

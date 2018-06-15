@@ -4,17 +4,9 @@ matrix:
   include:
     - python: "2.7"
       install:
-        - ./install-cloudinit.sh 0.6.3
-        - pip install pyyaml Cheetah
-    - python: "2.7"
-      install:
-        - ./install-cloudinit.sh 0.7.5
-        - pip install pyyaml Cheetah requests
-    - python: "3.4"
-      install:
-        - ./install-cloudinit.sh 0.7.7
+        - ./install-cloudinit.sh ubuntu/18.2-64-gbbcc5e82-0ubuntu1
         - pip install -r vendor/cloud-init/requirements.txt
-    - python: "3.4"
+    - python: "3.5"
       install:
-        - ./install-cloudinit.sh 0.7.8
+        - ./install-cloudinit.sh ubuntu/18.2-64-gbbcc5e82-0ubuntu1
         - pip install -r vendor/cloud-init/requirements.txt
