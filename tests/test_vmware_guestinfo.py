@@ -2,6 +2,7 @@ import unittest
 from DataSourceVmwareGuestinfo import DataSourceVmwareGuestinfo
 from cloudinit import log as logging
 from cloudinit import net
+from cloudinit.helpers import Paths
 
 from sys import version_info
 if version_info.major == 2:
@@ -12,7 +13,8 @@ else:
 from mock import mock_open, patch, Mock
 
 def instance( conf ):
-    return DataSourceVmwareGuestinfo( conf, Mock(), {} )
+    self.paths = Paths({'run_dir': tmp})
+    return DataSourceVmwareGuestinfo( conf, Mock(), {}, Paths({'run_dir': tmp}) )
 
 def test_nothing_set():
     ds = instance(

@@ -117,7 +117,6 @@ class DataSourceVmwareGuestinfo(sources.DataSource):
 
 # Used to match classes to dependenciess
 datasources = [
-    (DataSourceVmwareGuestinfo, (sources.DEP_FILESYSTEM, sources.DEP_NETWORK)),
     (DataSourceVmwareGuestinfo, []),
 ]
 
