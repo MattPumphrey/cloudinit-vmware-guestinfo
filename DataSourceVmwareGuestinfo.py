@@ -9,7 +9,7 @@ from cloudinit import sources
 
 LOG = logging.getLogger(__name__)
 
-class DataSourceNone(sources.DataSource):
+class DataSourceVmwareGuestinfo(sources.DataSource):
 
     dsname = "VmwareGuestinfo"
 
