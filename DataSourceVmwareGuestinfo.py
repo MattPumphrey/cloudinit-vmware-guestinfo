@@ -14,8 +14,8 @@ class DataSourceVmwareGuestinfo(sources.DataSource):
 
     dsname = "VmwareGuestinfo"
 
-    def __init__(self, sys_cfg, distro, paths, ud_proc=None):
-        sources.DataSource.__init__(self, sys_cfg, distro, paths, ud_proc)
+    def __init__(self, sys_cfg, distro, paths):
+        sources.DataSource.__init__(self, sys_cfg, distro, paths)
         self.metadata = {}
         self.userdata_raw = ''
 
@@ -54,23 +54,10 @@ class DataSourceVmwareGuestinfo(sources.DataSource):
         if eni is not None and 'network-config' in self.metadata:
             LOG.info("Skipped setting network-interfaces")
         elif 'network-interfaces' in self.metadata:
-            if NETWORK_VIA_DISTRO:
-                self._network_interfaces_via_distro()
-            else:
-                self._network_interfaces_direct()
+            self._network_interfaces_via_distro()
 
     def _network_interfaces_via_distro(self):
         self.distro.apply_network(self.metadata['network-interfaces'])
-
-    def _network_interfaces_direct(self):
-        util.write_file("/etc/network/interfaces",
-            self.metadata['network-interfaces'])
-        try:
-            (out, err) = util.subp(['ifup', '--all'])
-            if len(out) or len(err):
-                LOG.warn("ifup --all had stderr: %s" % err)
-        except subprocess.CalledProcessError as exc:
-            LOG.warn("ifup --all failed: %s" % (exc.output[1]))
 
     def _parse_ovf(self, ovf):
         """Parses ovfEnv guestinfo"""
