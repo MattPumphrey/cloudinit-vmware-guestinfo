@@ -6,6 +6,7 @@ import cloudinit.util as util
 
 from cloudinit import log as logging
 from cloudinit import sources
+from cloudinit.net import eni
 
 LOG = logging.getLogger(__name__)
 
